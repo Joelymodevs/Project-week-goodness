@@ -40,3 +40,21 @@ describe('/api/topics', () => {
         });
     });
 })
+
+describe('/api', () => {
+    test('should respond with a status 200', () => {
+        return request(app).get('/api').expect(200)
+    });
+    test('should respond with a JSON object', () => {
+        return request(app).get('/api').expect(200).then((response) => {
+            expect(typeof response).toBe('object')
+        })
+    });
+    test('should have a description key for EVERY endpoint', () => {
+        return request(app).get('/api').expect(200).then((response) => {
+            response.body.forEach((result) => {
+                expect(result.hasOwnProperty('description'))
+            })
+        })
+    });
+});
