@@ -1,10 +1,12 @@
 const express = require('express');
 const app = express();
-const { displayTopics } = require('./controllers')
+const { fetchTopics } = require('./controllers')
 
+app.get('/api/topics', fetchTopics);
 
-app.get('/api/topics', displayTopics)
-
+app.use(function(req, res, next)  {
+    res.status(404).json('Invalid endpoint')
+}) 
 
 
 
