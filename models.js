@@ -1,5 +1,7 @@
 const db = require('./db/connection');
 const fs = require('fs/promises')
+const endpoints = require('./endpoints.json')
+
 
 
 exports.getTopics = () => {
@@ -9,5 +11,5 @@ exports.getTopics = () => {
 }
 
 exports.getEndpoints = () => {
-    return fs.readFile(`./endpoints.json`)
+    JSON.stringify(endpoints)
 }
