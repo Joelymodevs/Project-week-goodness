@@ -1,8 +1,10 @@
 exports.handle500 = (err, res , req , next) => {
-    if (err) {
-        res.status(500).json({ message: 'Internal Server Error :('})
-    }  else {
-        next(err)
-    }
+    console.log(err);
+    res.status(500).send({msg : 'Internal Server Error :('});
+
+}
+exports.handle500 = (err, res , req , next) => {
+    console.log(err);
+    res.status(500).send({msg : 'Internal Server Error :('});
 
 }

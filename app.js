@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const endpoints = require("./endpoints.json");
 const { fetchTopics, fetchEndpoints } = require("./controllers");
+const { handle500 } = require("./errorhandles");
+app.use(handle500);
 
 app.get("/api", fetchEndpoints)
 app.get("/api/topics", fetchTopics);
