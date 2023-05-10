@@ -32,6 +32,12 @@ describe("/api/topics", () => {
   test("should respond with a status 200", () => {
     return request(app).get("/api/topics").expect(200);
   });
+  test("should have a length of 3", () => {
+    return request(app).get("/api/topics").expect(200).then((response) => {
+        expect(response.body.length).toBe(3)
+    });
+  });
+
 
   test("should respond with a slug and description", () => {
     return request(app)
