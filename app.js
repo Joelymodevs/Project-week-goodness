@@ -8,6 +8,7 @@ app.use(handle500);
 app.get("/api", fetchEndpoints)
 app.get("/api/topics", fetchTopics);
 
+
 app.use((req, res, next) => {
   res.status(404).json("Invalid endpoint");
 });
