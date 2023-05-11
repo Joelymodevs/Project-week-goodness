@@ -13,3 +13,20 @@ exports.getTopics = () => {
 exports.getEndpoints = () => {
     JSON.stringify(endpoints)
 }
+
+exports.getAllArticles = () => {
+    return db.query(`ALTER TABLE articles ADD COLUMN comment_count
+    INTEGER DEFAULT 0;`).then((result) => {
+        return result.rows
+    })
+    // .then(() => {
+    //     return db.query(`UPDATE articles AS comm
+    //     SET comment_count = (
+    //         SELECT COUNT(*)
+    //         FROM comments
+    //         WHERE article_id = comm.article_id
+    //     );`)
+    // }).then(() => {
+    //     return db.query(`SELECT * FROM articles`)
+    // })
+}
