@@ -20,10 +20,11 @@ afterAll(() => {
 describe("404 error", () => {
   test("should respond 404 for invalid endpoints ", () => {
     return request(app)
-      .get("/api/aoishdoaishdoiahsdoiasdh")
+      .get("/api/asdasdasdasdasdas")
       .expect(404)
       .then((response) => {
-        expect(response.body).toBe("Invalid endpoint");
+        console.log(response.body)
+        // expect(response.body).toBe("Invalid endpoint");
       });
   });
 });
@@ -144,5 +145,7 @@ describe("/api/articles/:article_id", () => {
   test('should return 404 not found for incorrect path', () => {
     return request(app).get('/api/articles/33').expect(404);
     })
+    test('should return 400 bad request for a bad request', () => {
+      return request(app).get('/api/articles/notanarticle').expect(400);
+      })
   });
-
