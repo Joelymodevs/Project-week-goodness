@@ -10,6 +10,8 @@ exports.getTopics = () => {
     })
 }
 
-exports.getEndpoints = () => {
-    JSON.stringify(endpoints)
+exports.getArticleById = (id) => {
+    return db.query('SELECT * FROM articles WHERE article_id = $1;', [id]).then((results) => {
+        return results.rows
+    });
 }

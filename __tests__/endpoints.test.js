@@ -10,13 +10,13 @@ const {
 const endpoints = require("../endpoints.json");
 const app = require("../app");
 
-beforeEach(() => {
-  return seed({ articleData, commentData, topicData, userData });
-});
+// beforeEach(() => {
+//   return seed({ articleData, commentData, topicData, userData });
+// });
 
-afterAll(() => {
-  return db.end();
-});
+// afterAll(() => {
+//   return db.end();
+// });
 describe("404 error", () => {
   test("should respond 404 for invalid endpoints ", () => {
     return request(app)
@@ -95,4 +95,44 @@ describe("/api", () => {
         expect(result.body).toEqual(endpoints);
       });
   });
+});
+
+describe('/api/articles/:article_id', () => {
+    test('test for 200 status on completion', () => {
+        return request(app).get(`/api/articles/3`).expect(200);
+    });
+    test('should have the correct article by id', () => {
+        return request(app).get(`/api/articles/1`).expect(200).then((result) => {
+            expect(result.body).toEqual([{
+                article_id : 1,
+                title: 'Living in the shadow of a great man',
+                topic: 'mitch',
+                author: 'butter_bridge',
+                body: 'I find this existence challenging',
+                created_at: '2020-07-09T20:11:00.000Z',
+                votes: 100,
+                article_img_url:
+                  'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+              }])
+        });
+    });
+    test('should have all 8 properties', () => {
+      return request(app).get(`/api/articles/1`).expect(200).then((result) => {
+        expect(result.body).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              article_id : 1,
+                title: 'Living in the shadow of a great man',
+                topic: 'mitch',
+                author: 'butter_bridge',
+                body: 'I find this existence challenging',
+                created_at: '2020-07-09T20:11:00.000Z',
+                votes: 100,
+                article_img_url:
+                  'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+            })
+          ])
+        )
+      })
+    });
 });
