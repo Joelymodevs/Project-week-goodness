@@ -100,14 +100,6 @@ describe("/api/articles/:article_id", () => {
   test("test for 200 status on completion", () => {
     return request(app).get(`/api/articles/3`).expect(200);
   });
-  test("should have the correct article by id, with correct amount of properties", () => {
-    return request(app)
-      .get(`/api/articles/1`)
-      .expect(200)
-      .then((result) => {
-        expect(Object.keys(result.body).length).toBe(8);
-      });
-  });
   test("should have all 8 properties", () => {
     return request(app)
       .get(`/api/articles/1`)
@@ -139,9 +131,13 @@ describe("/api/articles/:article_id", () => {
       });
   });
   test('should return 404 not found for incorrect path', () => {
-    return request(app).get('/api/articles/33').expect(404);
+    return request(app).get('/api/articles/33').expect(404).then((response) => {
+      expect(response.body).toEqual({"msg": "no article found"});
+    });
     })
     test('should return 400 bad request for a bad request', () => {
-      return request(app).get('/api/articles/notanarticle').expect(400);
+      return request(app).get('/api/articles/notanarticle').expect(400).then((response) =>{
+        expect(response.body).toEqual({"msg": "invalid input"});
+      });
       })
   });
