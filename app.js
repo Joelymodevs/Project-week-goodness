@@ -1,9 +1,10 @@
 const express = require("express");
 const app = express();
 const { fetchTopics, fetchEndpoints, fetchArticleById } = require("./controllers");
-const { handle500, handle400 } = require("./errorhandles");
+const { handle500, psqlErr, handleCustom } = require("./errorhandles");
+app.use(psqlErr);
+app.use(handleCustom)
 app.use(handle500);
-app.use(handle400)
 
 app.get("/api", fetchEndpoints)
 app.get("/api/topics", fetchTopics);

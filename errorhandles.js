@@ -4,7 +4,14 @@ exports.handle500 = (err, res , req , next) => {
 
 }
 
-exports.handle400 = (err, res, req, next) => {
-    console.log(err);
-    res.status(400).send({msg : '400, bad request'})
+exports.handleCustom = (err, res, req, next) => {
+    if (err.status && err.msg) {
+        res.status(err.status).send({ msg: err.msg });
+      } else next(err);
+    };
+
+exports.psqlErr = (err, res, req, next) => {
+    if (err.code === '22P02') {
+        res.status(400).send({msg: 'invalid input'});
+    } else  next(err) 
 }

@@ -33,11 +33,13 @@ describe("/api/topics", () => {
     return request(app).get("/api/topics").expect(200);
   });
   test("should have a length of 3", () => {
-    return request(app).get("/api/topics").expect(200).then((response) => {
-        expect(response.body.length).toBe(3)
-    });
+    return request(app)
+      .get("/api/topics")
+      .expect(200)
+      .then((response) => {
+        expect(response.body.length).toBe(3);
+      });
   });
-
 
   test("should respond with a slug and description", () => {
     return request(app)
@@ -97,40 +99,50 @@ describe("/api", () => {
   });
 });
 
-describe('/api/articles/:article_id', () => {
-    test('test for 200 status on completion', () => {
-        return request(app).get(`/api/articles/3`).expect(200);
-    });
-    test('should have the correct article by id', () => {
-        return request(app).get(`/api/articles/1`).expect(200).then((result) => {
-          expect(result.body.length).toBe(1)
-        });
-    });
-    test('should have all 8 properties', () => {
-      return request(app).get(`/api/articles/1`).expect(200).then((result) => {
-        console.log(result.body)
-        expect(result.body[0]).toHaveProperty('article_id')
-        expect(result.body[0]).toHaveProperty('title')
-        expect(result.body[0]).toHaveProperty('topic')
-        expect(result.body[0]).toHaveProperty('author')
-        expect(result.body[0]).toHaveProperty('body')
-        expect(result.body[0]).toHaveProperty('created_at')
-        expect(result.body[0]).toHaveProperty('votes')
-        expect(result.body[0]).toHaveProperty('article_img_url')
+describe("/api/articles/:article_id", () => {
+  test("test for 200 status on completion", () => {
+    return request(app).get(`/api/articles/3`).expect(200);
+  });
+  test("should have the correct article by id, with correct amount of properties", () => {
+    return request(app)
+      .get(`/api/articles/1`)
+      .expect(200)
+      .then((result) => {
+        expect(Object.keys(result.body).length).toBe(8);
+      });
+  });
+  test("should have all 8 properties", () => {
+    return request(app)
+      .get(`/api/articles/1`)
+      .expect(200)
+      .then((result) => {
+        expect(result.body).toHaveProperty("article_id");
+        expect(result.body).toHaveProperty("title");
+        expect(result.body).toHaveProperty("topic");
+        expect(result.body).toHaveProperty("author");
+        expect(result.body).toHaveProperty("body");
+        expect(result.body).toHaveProperty("created_at");
+        expect(result.body).toHaveProperty("votes");
+        expect(result.body).toHaveProperty("article_img_url");
+      });
+  });
+  test("all properties should be of the correct data type", () => {
+    return request(app)
+      .get("/api/articles/1")
+      .expect(200)
+      .then((result) => {
+        expect(typeof result.body.article_id).toBe("number");
+        expect(typeof result.body.title).toBe("string");
+        expect(typeof result.body.topic).toBe("string");
+        expect(typeof result.body.author).toBe("string");
+        expect(typeof result.body.body).toBe("string");
+        expect(typeof result.body.created_at).toBe("string");
+        expect(typeof result.body.votes).toBe("number");
+        expect(typeof result.body.article_img_url).toBe("string");
+      });
+  });
+  test('should return 404 not found for incorrect path', () => {
+    return request(app).get('/api/articles/33').expect(404);
+    })
+  });
 
-      })
-    });
-    test('all properties should be of the correct data type', () => {
-      return request(app).get('/api/articles/1').expect(200).then((result) => {
-        expect(typeof result.body[0].article_id).toBe('number')
-        expect(typeof result.body[0].title).toBe('string')
-        expect(typeof result.body[0].topic).toBe('string')
-        expect(typeof result.body[0].author).toBe('string')
-        expect(typeof result.body[0].body).toBe('string')
-        expect(typeof result.body[0].created_at).toBe('string')
-        expect(typeof result.body[0].votes).toBe('number')
-        expect(typeof result.body[0].article_img_url).toBe('string')
-
-      })
-    });
-});
