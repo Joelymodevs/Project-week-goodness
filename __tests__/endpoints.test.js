@@ -22,10 +22,6 @@ describe("404 error", () => {
     return request(app)
       .get("/api/asdasdasdasdasdas")
       .expect(404)
-      .then((response) => {
-        console.log(response.body)
-        // expect(response.body).toBe("Invalid endpoint");
-      });
   });
 });
 

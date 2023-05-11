@@ -18,13 +18,3 @@ exports.handle500 = (err, req , res , next) => {
     res.status(500).send({msg : 'Internal Server Error :('});
 
 }
-
-// exports.handle400 = (err, req, res, next) => {
-//     console.log(err);
-//     if (err.code === )
-// }
-
-// exports.handle404 = (err, req, res , next) => {
-//     console.log(err);
-//     res.status(404).send({msg : '404, not found'})
-// }
