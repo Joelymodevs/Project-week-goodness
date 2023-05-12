@@ -1,6 +1,7 @@
 const request = require("supertest");
 const db = require("../db/connection");
 const seed = require("../db/seeds/seed");
+const jestSorted = require('jest-sorted')
 const {
   articleData,
   commentData,
@@ -100,6 +101,7 @@ describe("/api", () => {
 describe('/api/articles', () => {
   it('should have all properties of articles with new comment count column', () => {
     return request(app).get('/api/articles').expect(200).then((result) => {
+      expect(result.body.length).toBe(12)
       result.body.forEach((article) => {
         expect(typeof article.article_id).toBe("number");
         expect(typeof article.title).toBe("string");
@@ -109,14 +111,23 @@ describe('/api/articles', () => {
         expect(typeof article.created_at).toBe("string");
         expect(typeof article.votes).toBe("number");
         expect(typeof article.article_img_url).toBe("string");
-      })
-    })
-  });
-  it('no article should have a body property', () => {
-    return request(app).get('/api/articles').expect(200).then((result) =>{
-      result.body.forEach((article) => {
-        expect(article.body).toBe(undefined)
-      })
-    })
-  });
+      });
+    });
+  
 });
+it('no article should have a body property', () => {
+  return request(app).get('/api/articles').expect(200).then((result) =>{
+    console.log(result.body)
+    expect(result.body.length).toBe(12)
+    result.body.forEach((article) => {
+      expect(article.body).toBe(undefined)
+    })
+  })
+});
+it('should be ordered by created_by descending', () => {
+  return request(app).get('/api/articles').expect(200).then((result) => {
+    expect(result.body).toBeSortedBy('created_at', { descending: true });
+  })
+});
+})
+

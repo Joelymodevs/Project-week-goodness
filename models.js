@@ -25,7 +25,7 @@ exports.getAllArticles = () => {
       COUNT(comments.article_id)::int AS 
       comment_count 
       FROM articles 
-      RIGHT JOIN comments ON 
+      LEFT JOIN comments ON 
       articles.article_id = comments.article_id
       GROUP BY articles.article_id
       ORDER BY articles.created_at DESC`
