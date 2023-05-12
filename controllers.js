@@ -17,7 +17,7 @@ exports.fetchEndpoints = (req, res, next) => {
 }
 
 exports.fetchAllArticles = (req, res , next) => {
-    getAllArticles().then(({result}) => {
+    getAllArticles().then((result) => {
         res.status(200).send(result)
     }).catch(err => {
         next(err)

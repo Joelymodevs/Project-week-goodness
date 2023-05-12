@@ -8,6 +8,7 @@ const {
   userData,
 } = require("../db/data/test-data/index");
 const endpoints = require("../endpoints.json");
+const createRef = require('../db/seeds/utils')
 const app = require("../app");
 
 beforeEach(() => {
@@ -94,5 +95,28 @@ describe("/api", () => {
       .then((result) => {
         expect(result.body).toEqual(endpoints);
       });
+  });
+});
+describe('/api/articles', () => {
+  it('should have all properties of articles with new comment count column', () => {
+    return request(app).get('/api/articles').expect(200).then((result) => {
+      result.body.forEach((article) => {
+        expect(typeof article.article_id).toBe("number");
+        expect(typeof article.title).toBe("string");
+        expect(typeof article.topic).toBe("string");
+        expect(typeof article.author).toBe("string");
+        expect(typeof article.comment_count).toBe("number");
+        expect(typeof article.created_at).toBe("string");
+        expect(typeof article.votes).toBe("number");
+        expect(typeof article.article_img_url).toBe("string");
+      })
+    })
+  });
+  it('no article should have a body property', () => {
+    return request(app).get('/api/articles').expect(200).then((result) =>{
+      result.body.forEach((article) => {
+        expect(article.body).toBe(undefined)
+      })
+    })
   });
 });
