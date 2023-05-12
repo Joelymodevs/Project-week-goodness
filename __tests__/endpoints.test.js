@@ -1,6 +1,7 @@
 const request = require("supertest");
 const db = require("../db/connection");
 const seed = require("../db/seeds/seed");
+const jestSorted = require('jest-sorted')
 const {
   articleData,
   commentData,
@@ -159,6 +160,11 @@ describe("/api/articles/:article_id", () => {
           expect(typeof comment.article_id).toBe('number');
 
         })
+      })
+    });
+    it('should be ordered, newest comments first', () => {
+      return request(app).get('/api/articles/3/comments').expect(200).then((response) => {
+        expect(response.body).toBeSortedBy('created_at', {descending: true})
       })
     });
   });
