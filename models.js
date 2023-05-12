@@ -22,3 +22,16 @@ exports.getArticleById = (id) => {
         return article;
     });
 }
+
+exports.getCommentsById = (id) => {
+  return db.query('SELECT * FROM comments WHERE article_id = $1;', [id]).then((result) => {
+    const comments = result.rows;
+    if(!comments) {
+      return Promise.reject({
+        status: 404,
+        msg: 'no comments found'
+      })
+    }
+    return comments;
+  })
+}

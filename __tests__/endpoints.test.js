@@ -141,3 +141,24 @@ describe("/api/articles/:article_id", () => {
       });
       })
   });
+
+  describe('/api/articles/:article_id/comments', () => {
+    it('should return an array of comments', () => {
+      return request(app).get('/api/articles/3/comments').expect(200).then((response) => {
+        expect(Array.isArray(response.body)).toBe(true)
+      })
+    });
+    it('should have ALL properties of comments ', () => {
+      return request(app).get('/api/articles/3/comments').expect(200).then((response) => {
+        expect(response.body.length).toBe(2)
+        response.body.forEach((comment) => {
+          expect(typeof comment.comment_id).toBe('number');
+          expect(typeof comment.votes).toBe('number');
+          expect(typeof comment.created_at).toBe('string');
+          expect(typeof comment.body).toBe('string');
+          expect(typeof comment.article_id).toBe('number');
+
+        })
+      })
+    });
+  });
