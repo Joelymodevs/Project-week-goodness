@@ -26,7 +26,7 @@ exports.getArticleById = (id) => {
 exports.getCommentsById = (id) => {
   return db.query('SELECT * FROM comments WHERE article_id = $1 ORDER BY created_at DESC;', [id]).then((result) => {
     const comments = result.rows;
-    if(!comments) {
+    if(comments.length === 0) {
       return Promise.reject({
         status: 404,
         msg: 'no comments found'

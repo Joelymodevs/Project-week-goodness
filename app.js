@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const { fetchTopics, fetchEndpoints, fetchArticleById, fetchCommentsById } = require("./controllers");
-const { handle500, psqlErr, handleCustom, handle400, handle404 } = require("./errorhandles");
+const { handle500, psqlErr, handleCustom,} = require("./errorhandles");
 
 app.get("/api", fetchEndpoints)
 app.get("/api/topics", fetchTopics);

@@ -167,4 +167,15 @@ describe("/api/articles/:article_id", () => {
         expect(response.body).toBeSortedBy('created_at', {descending: true})
       })
     });
+    it('should return 404 for article that does not exist', () => {
+      return request(app).get('/api/articles/5230235/comments').expect(404).then((response) => {
+        console.log(response);
+        expect(response.body).toEqual({msg: 'no comments found'})
+      })
+    });
+    it('should return 400 for bad request e.g. article_id = not_an_id', () => {
+      return request(app).get('/api/articles/not_an_id/comments').expect(400).then((response) => {
+        expect(response.body).toEqual({msg: 'invalid input'})
+      })
+    });
   });
