@@ -33,3 +33,9 @@ exports.fetchCommentsById = (req, res, next) => {
         next(err)
     })
 }
+
+exports.postComment = (req, res, next) => {
+    const id = req.params.article_id;
+
+
+}
