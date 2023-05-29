@@ -1,4 +1,4 @@
-const { getTopics, getEndpoints, getArticleById, getCommentsById} = require('./models')
+const { getTopics, getEndpoints, getArticleById, getCommentsById, postCommentById} = require('./models')
 const endpoints = require('./endpoints.json')
 
 
@@ -32,4 +32,13 @@ exports.fetchCommentsById = (req, res, next) => {
     }).catch(err => {
         next(err)
     })
+}
+
+exports.uploadCommentById = (req, res, next) => {
+   const id = req.params.article_id;
+   const comment = req.body;
+   postCommentById(id, comment).then((comment) => {
+    res.status(201).send({comment})
+   })
+   
 }
