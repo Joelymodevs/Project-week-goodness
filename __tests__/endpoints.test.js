@@ -186,3 +186,43 @@ describe("/api/articles/:article_id", () => {
       });
       })
   });
+
+  describe('/api/articles/:article_id/comments', () => {
+    it('should return an array of comments', () => {
+      return request(app).get('/api/articles/3/comments').expect(200).then((response) => {
+        expect(Array.isArray(response.body)).toBe(true)
+      })
+    });
+    it('should have ALL properties of comments ', () => {
+      return request(app).get('/api/articles/3/comments').expect(200).then((response) => {
+        expect(response.body.length).toBe(2)
+        response.body.forEach((comment) => {
+          expect(typeof comment.comment_id).toBe('number');
+          expect(typeof comment.votes).toBe('number');
+          expect(typeof comment.created_at).toBe('string');
+          expect(typeof comment.body).toBe('string');
+          expect(typeof comment.article_id).toBe('number');
+
+        })
+      })
+    });
+    it('should be ordered, newest comments first', () => {
+      return request(app).get('/api/articles/3/comments').expect(200).then((response) => {
+        expect(response.body).toBeSortedBy('created_at', {descending: true})
+      })
+    });
+    it.skip('should return 404 for article that does not exist', () => {
+      return request(app).get('/api/articles/5230235/comments').expect(404).then((response) => {
+        console.log(response);
+        expect(response.body).toEqual({msg: 'no comments found'})
+      })
+    });
+    it('should return 400 for bad request e.g. article_id = not_an_id', () => {
+      return request(app).get('/api/articles/not_an_id/comments').expect(400).then((response) => {
+        expect(response.body).toEqual({msg: 'invalid input'})
+      })
+    });
+    it('should return 200 if the article_id is valid, but it has no comments ', () => {
+      return request(app).get('/api/articles/2/comments').expect(200)
+    });
+  });

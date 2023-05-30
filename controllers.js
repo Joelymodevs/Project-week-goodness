@@ -35,3 +35,18 @@ exports.fetchArticleById = (req, res, next) => {
         next(err)
     })
 }
+
+exports.fetchCommentsById = (req, res, next) => {
+    const id = req.params.article_id;
+    getCommentsById(id).then((results) => {
+        res.status(200).send(results)
+    }).catch(err => {
+        next(err)
+    })
+}
+
+exports.postComment = (req, res, next) => {
+    const id = req.params.article_id;
+
+
+}
