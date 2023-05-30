@@ -55,7 +55,25 @@ exports.postCommentById = (id, comment) => {
       [id, comment.username, comment.body]
     )
     .then((result) => {
-      console.log(result)
+      console.log(result);
       return result.rows;
+    });
+};
+
+exports.submitVotes = (id, votes) => {
+  if (!typeof votes === "number") {
+    return Promise.reject({
+      status: 400,
+      msg: "Bad Request",
+    });
+  }
+
+  return db
+    .query(
+      `UPDATE articles SET votes = votes + $1 WHERE article_id = $2 RETURNING *`,
+      [votes, id]
+    )
+    .then((result) => {
+      return result.rows[0]
     });
 };
