@@ -186,3 +186,64 @@ describe("/api/articles/:article_id", () => {
       });
       })
   });
+
+
+  describe('/api/articles/:article_id/comments POS', () => {
+    it('should return an array of comments', () => {
+      return request(app).get('/api/articles/3/comments').expect(200).then((response) => {
+        expect(Array.isArray(response.body)).toBe(true)
+      })
+    });
+    it('should have ALL properties of comments ', () => {
+      return request(app).get('/api/articles/3/comments').expect(200).then((response) => {
+        expect(response.body.length).toBe(2)
+        response.body.forEach((comment) => {
+          expect(typeof comment.comment_id).toBe('number');
+          expect(typeof comment.votes).toBe('number');
+          expect(typeof comment.created_at).toBe('string');
+          expect(typeof comment.body).toBe('string');
+          expect(typeof comment.article_id).toBe('number');
+
+        })
+      })
+    });
+    it('should be ordered, newest comments first', () => {
+      return request(app).get('/api/articles/3/comments').expect(200).then((response) => {
+        expect(response.body).toBeSortedBy('created_at', {descending: true})
+      })
+    });
+    it('should return 404 for article that does not exist', () => {
+      return request(app).get('/api/articles/5230235/comments').expect(404).then((response) => {
+        expect(response.body).toEqual({msg: 'no comments found'})
+      })
+    });
+    it('should return 400 for bad request e.g. article_id = not_an_id', () => {
+      return request(app).get('/api/articles/not_an_id/comments').expect(400).then((response) => {
+        expect(response.body).toEqual({msg: 'invalid input'})
+      })
+    });
+  });
+
+  describe('POST /api/articles/:article_id/comments', () => {
+    it('should respond 201 ', () => {
+      const comm = {
+        username: 'lurker',
+        body: 'I hope this works!',
+      };
+      return request(app).post('/api/articles/1/comments').send(comm).expect(201)
+    });
+    it('should respond with a comment which has been posted to the selected article', () => {
+      const comm = {
+        username: 'lurker',
+        body: 'This also should work!'
+      };
+
+      return request(app).post('/api/articles/1/comments').send(comm).expect(201).then((response) => {
+        expect(response.body.comment[0]).toHaveProperty('body')
+        expect(response.body.comment[0]).toHaveProperty('author')
+        expect(response.body.comment[0]).toHaveProperty('article_id', 1)
+      })
+    });
+  });
+
+
