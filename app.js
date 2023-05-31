@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const endpoints = require("./endpoints.json");
-const { fetchTopics, fetchEndpoints, fetchAllArticles, fetchArticleById } = require("./controllers");
+const { fetchTopics, fetchEndpoints, fetchAllArticles, fetchArticleById, fetchCommentsById, uploadCommentById} = require("./controllers");
 const { handle500, psqlErr, handleCustom } = require("./errorhandles");
 const cors = require('cors')
 app.use(cors())

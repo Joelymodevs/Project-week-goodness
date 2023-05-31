@@ -7,6 +7,7 @@ exports.getTopics = () => {
   return db.query("SELECT * FROM topics").then((results) => {
     return results.rows;
   });
+}
 
 exports.getTopics = () => {
   return db.query("SELECT * FROM topics").then((results) => {
@@ -87,10 +88,9 @@ exports.postCommentById = (id, comment) => {
     .query(
       `INSERT INTO comments (article_id, author, body)
   VALUES ($1, $2, $3) RETURNING *`,
-      [id, comment.username, comment.body]
+      [id, comment.author, comment.body]
     )
     .then((result) => {
-      console.log(result)
       return result.rows;
     });
 

@@ -227,14 +227,14 @@ describe("/api/articles/:article_id", () => {
   describe('POST /api/articles/:article_id/comments', () => {
     it('should respond 201 ', () => {
       const comm = {
-        username: 'lurker',
+        author: 'lurker',
         body: 'I hope this works!',
       };
       return request(app).post('/api/articles/1/comments').send(comm).expect(201)
     });
     it('should respond with a comment which has been posted to the selected article', () => {
       const comm = {
-        username: 'lurker',
+        author: 'lurker',
         body: 'This also should work!'
       };
 

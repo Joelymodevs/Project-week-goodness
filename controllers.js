@@ -1,5 +1,5 @@
 
-const { getTopics, getEndpoints, getArticleById, getCommentsById, postCommentById} = require('./models')
+const { getTopics, getEndpoints, getArticleById, getCommentsById, postCommentById, getAllArticles} = require('./models')
 
 
 
@@ -53,6 +53,8 @@ exports.uploadCommentById = (req, res, next) => {
    const comment = req.body;
    postCommentById(id, comment).then((comment) => {
     res.status(201).send({comment})
-   })
+   }).catch(err => {
+    console.log(err)
+   }) 
    
 }
