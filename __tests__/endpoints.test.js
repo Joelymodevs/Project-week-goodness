@@ -246,4 +246,24 @@ describe("/api/articles/:article_id", () => {
     });
   });
 
+  describe('PATH /api/articles/:article_id', () => {
+    it('should succesfully update votes', () => {
+      const vote = {
+        inc_votes: 1
+      }
+      return request(app).patch('/api/articles/1').send(vote).expect(200).then((response) => {
+        expect(response.body).toHaveProperty('article')
+        expect(response.body.article.votes).toBe(101)
+      })
+    });
+    it('should not accept a bad request', () => {
+      const vote = {
+        inc_votes: 'bad request'
+      }
+      return request(app).patch('/api/articles/1').send(vote).expect(400)
+    });
+  });
+
+
+
 
