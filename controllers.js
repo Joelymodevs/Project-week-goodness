@@ -1,4 +1,10 @@
-const { getTopics, getEndpoints, getArticleById, getCommentsById, postCommentById, submitVotes} = require('./models')
+
+
+const { getTopics, getEndpoints, getArticleById, getCommentsById, postCommentById, getAllArticles, submitVotes} = require('./models')
+
+
+
+
 const endpoints = require('./endpoints.json')
 
 
@@ -16,9 +22,19 @@ exports.fetchEndpoints = (req, res, next) => {
     })
 }
 
+
+exports.fetchAllArticles = (req, res , next) => {
+    getAllArticles().then((result) => { 
+      res.status(200).send(result)
+    }).catch(err => {
+        next(err)
+    })
+}
+
 exports.fetchArticleById = (req, res, next) => {
     const id = req.params.article_id;
     getArticleById(id).then((result) => {
+
         res.status(200).send(result)
     }).catch(err => {
         next(err)
@@ -39,9 +55,11 @@ exports.uploadCommentById = (req, res, next) => {
    const comment = req.body;
    postCommentById(id, comment).then((comment) => {
     res.status(201).send({comment})
+
    }).catch((err) => {
     next(err)
    })
+
    
 }
 
