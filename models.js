@@ -55,7 +55,6 @@ exports.postCommentById = (id, comment) => {
       [id, comment.username, comment.body]
     )
     .then((result) => {
-      console.log(result);
       return result.rows;
     });
 };
